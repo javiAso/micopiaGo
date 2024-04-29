@@ -1,0 +1,105 @@
+definitions:
+  models.CreateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+    type: object
+  models.Customer:
+    properties:
+      address:
+        type: string
+      customer_id:
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  models.Customers:
+    properties:
+      customers:
+        items:
+          $ref: '#/definitions/models.Customer'
+        type: array
+    type: object
+  models.Product:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      price:
+        type: number
+      product_id:
+        type: integer
+      stock:
+        type: integer
+    type: object
+  models.Products:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/models.Product'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Wellcome to the Micopia Swagger Documentation
+  title: Micopia Swagger Documentation
+  version: "1.0"
+paths:
+  /ProductCRUD/createProduct:
+    post:
+      description: Create Product in the database
+      parameters:
+      - description: The Product to create
+        in: body
+        name: CreateProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      tags:
+      - Product
+  /ProductCRUD/getProducts:
+    get:
+      description: Get All Products from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Products'
+      tags:
+      - Product
+  /UserCRUD/getUsers:
+    get:
+      description: Get All Customers from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customers'
+      tags:
+      - Customer
+swagger: "2.0"

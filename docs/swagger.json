@@ -1,0 +1,164 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Wellcome to the Micopia Swagger Documentation",
+        "title": "Micopia Swagger Documentation",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "paths": {
+        "/ProductCRUD/createProduct": {
+            "post": {
+                "description": "Create Product in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Product to create",
+                        "name": "CreateProductRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                }
+            }
+        },
+        "/ProductCRUD/getProducts": {
+            "get": {
+                "description": "Get All Products from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Products"
+                        }
+                    }
+                }
+            }
+        },
+        "/UserCRUD/getUsers": {
+            "get": {
+                "description": "Get All Customers from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customers"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CreateProductRequest": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Customer": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Customers": {
+            "type": "object",
+            "properties": {
+                "customers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Customer"
+                    }
+                }
+            }
+        },
+        "models.Product": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Products": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Product"
+                    }
+                }
+            }
+        }
+    }
+}
