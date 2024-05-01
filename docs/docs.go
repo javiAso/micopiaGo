@@ -45,6 +45,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/CustomerCRUD/deleteCustomer": {
+            "delete": {
+                "description": "Delete Customer in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Customer identifier",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/CustomerCRUD/getCustomer": {
             "get": {
                 "description": "Get Customer from the database by id",

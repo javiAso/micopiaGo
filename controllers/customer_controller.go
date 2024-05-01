@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/mail"
 	"regexp"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -191,6 +192,47 @@ func UpdateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	utils.JSONResponse(w, http.StatusOK, c)
 }
 
+// CreateTags		godoc
+// @Summary: 		Delete Customer
+// @Description  	Delete Customer in the database
+// @Param			customerId query string true "The Customer identifier"
+// @Produce 		application/json
+// @Tags			Customer
+// @Success      	200 {string} string "Customer deleted successfully"
+// @Router 			/CustomerCRUD/deleteCustomer [delete]
+func DeleteCustomerHandler(w http.ResponseWriter, r *http.Request) {
+	// Get a connection to the database
+	db := commons.GetConnection()
+	defer db.Close()
+
+	// Extract the id from the URL segment
+
+	id, err := strconv.Atoi(r.URL.Query().Get("customerId"))
+	if err != nil {
+		utils.JSONError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	// Start a transaction in the database
+	tx, err := db.Begin()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "Failed to delete Customer (CONNECTING DB)")
+		return
+	}
+	code, err := deleteCustomer(id, tx)
+	if err != nil {
+		utils.JSONError(w, code, err.Error())
+		return
+	}
+	// Commit the transaction
+	err = tx.Commit()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "Failed to commit the delete transaction")
+		return
+	}
+	// Return a successful response
+	utils.JSONResponse(w, http.StatusOK, "Customer deleted successfully")
+}
+
 //Private methods:
 
 func createCustomer(c *models.Customer, tx *sql.Tx) (int, error) {
@@ -326,6 +368,38 @@ func updateCustomer(c *models.Customer, tx *sql.Tx) (int, error) {
 		return http.StatusNotModified, errors.New("customer not updated (NO CHANGES)")
 	}
 
+	return http.StatusOK, nil
+}
+
+func deleteCustomer(id int, tx *sql.Tx) (int, error) {
+
+	// Prepare the SQL statement to delete the customer
+	stmt, err := tx.Prepare("DELETE FROM Customer WHERE customer_id = ?")
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete customer (PREPARE QUERY)")
+	}
+	defer stmt.Close()
+
+	// Execute the SQL statement to delete the customer
+	result, err := stmt.Exec(id)
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete customer (EXECUTE QUERY)")
+	}
+
+	// Get the number of rows affected by the SQL statement
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete customer (ROWS AFFECTED)")
+	}
+
+	// If no rows were deleted, rollback the transaction
+	if rowsAffected == 0 {
+		tx.Rollback()
+		return http.StatusNotModified, errors.New("failed to delete customer (NO ROWS AFFECTED)")
+	}
 	return http.StatusOK, nil
 }
 

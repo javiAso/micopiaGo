@@ -91,6 +91,24 @@ paths:
             $ref: '#/definitions/models.Customer'
       tags:
       - Customer
+  /CustomerCRUD/deleteCustomer:
+    delete:
+      description: Delete Customer in the database
+      parameters:
+      - description: The Customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer deleted successfully
+          schema:
+            type: string
+      tags:
+      - Customer
   /CustomerCRUD/getCustomer:
     get:
       description: Get Customer from the database by id
