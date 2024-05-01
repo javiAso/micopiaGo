@@ -8,6 +8,7 @@ import (
 	"micopia/models"
 	"micopia/utils"
 	"net/http"
+	"strconv"
 )
 
 // CreateTags		godoc
@@ -188,6 +189,47 @@ func UpdateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	utils.JSONResponse(w, http.StatusOK, c)
 }
 
+// CreateTags		godoc
+// @Summary: 		Delete Category
+// @Description  	Delete Category in the database
+// @Param			categoryId query string true "The Category identifier"
+// @Produce 		application/json
+// @Tags			Category
+// @Success      	200 {string} string "Category deleted successfully"
+// @Router 			/CategoryCRUD/deleteCategory [delete]
+func DeleteCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	// Get a connection to the database
+	db := commons.GetConnection()
+	defer db.Close()
+
+	// Extract the id from the URL segment
+
+	id, err := strconv.Atoi(r.URL.Query().Get("categoryId"))
+	if err != nil {
+		utils.JSONError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	// Start a transaction in the database
+	tx, err := db.Begin()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to delete category (CONNECTING DB)")
+		return
+	}
+	code, err := deleteCategory(id, tx)
+	if err != nil {
+		utils.JSONError(w, code, err.Error())
+		return
+	}
+	// Commit the transaction
+	err = tx.Commit()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to commit the delete transaction")
+		return
+	}
+	// Return a successful response
+	utils.JSONResponse(w, http.StatusOK, "category deleted successfully")
+}
+
 // private methods
 
 func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
@@ -275,5 +317,37 @@ func updateCategory(c *models.Category, tx *sql.Tx) (int, error) {
 		return http.StatusNotModified, errors.New("category not updated (NO CHANGES)")
 	}
 
+	return http.StatusOK, nil
+}
+
+func deleteCategory(id int, tx *sql.Tx) (int, error) {
+
+	// Prepare the SQL statement to delete the category
+	stmt, err := tx.Prepare("DELETE FROM Category WHERE category_id = ?")
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete category (PREPARE QUERY)")
+	}
+	defer stmt.Close()
+
+	// Execute the SQL statement to delete the category
+	result, err := stmt.Exec(id)
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete category (EXECUTE QUERY)")
+	}
+
+	// Get the number of rows affected by the SQL statement
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, errors.New("failed to delete category (ROWS AFFECTED)")
+	}
+
+	// If no rows were deleted, rollback the transaction
+	if rowsAffected == 0 {
+		tx.Rollback()
+		return http.StatusNotModified, errors.New("failed to delete category (NO ROWS AFFECTED)")
+	}
 	return http.StatusOK, nil
 }

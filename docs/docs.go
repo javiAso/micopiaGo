@@ -45,6 +45,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/CategoryCRUD/deleteCategory": {
+            "delete": {
+                "description": "Delete Category in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Category identifier",
+                        "name": "categoryId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/CategoryCRUD/getCategories": {
             "get": {
                 "description": "Get All Categories from the database",

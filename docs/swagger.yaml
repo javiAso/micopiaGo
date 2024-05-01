@@ -110,6 +110,24 @@ paths:
             $ref: '#/definitions/models.Category'
       tags:
       - Category
+  /CategoryCRUD/deleteCategory:
+    delete:
+      description: Delete Category in the database
+      parameters:
+      - description: The Category identifier
+        in: query
+        name: categoryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category deleted successfully
+          schema:
+            type: string
+      tags:
+      - Category
   /CategoryCRUD/getCategories:
     get:
       description: Get All Categories from the database

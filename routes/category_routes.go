@@ -12,5 +12,5 @@ func SetCategoryRoutes(router *mux.Router) {
 	subRoute.HandleFunc("/getCategory", controllers.GetCategoryHandler).Methods("GET")
 	subRoute.HandleFunc("/createCategory", controllers.CreateCategoryHandler).Methods("PUT")
 	subRoute.HandleFunc("/updateCategory", controllers.UpdateCategoryHandler).Methods("POST")
-	/*subRoute.HandleFunc("/deleteCategory", controllers.DeletecategoryHandler).Methods("DELETE") */
+	subRoute.HandleFunc("/deleteCategory", controllers.DeleteCategoryHandler).Methods("DELETE")
 }
