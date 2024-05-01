@@ -9,5 +9,7 @@ import (
 func SetProductRoutes(router *mux.Router) {
 	subRoute := router.PathPrefix("/ProductCRUD").Subrouter()
 	subRoute.HandleFunc("/getProducts", controllers.AllProductsHandler).Methods("GET")
-	subRoute.HandleFunc("/createProduct", controllers.CreateProduct).Methods("POST")
+	subRoute.HandleFunc("/createProduct", controllers.CreateProduct).Methods("PUT")
+	subRoute.HandleFunc("/updateProduct", controllers.UpdateProduct).Methods("POST")
+	subRoute.HandleFunc("/deleteProduct", controllers.DeleteProduct).Methods("DELETE")
 }

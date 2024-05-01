@@ -16,7 +16,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/ProductCRUD/createProduct": {
-            "post": {
+            "put": {
                 "description": "Create Product in the database",
                 "produces": [
                     "application/json"
@@ -36,10 +36,38 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                }
+            }
+        },
+        "/ProductCRUD/deleteProduct": {
+            "delete": {
+                "description": "Delete Product in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The product identifier",
+                        "name": "productId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "deleted",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -59,6 +87,36 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Products"
+                        }
+                    }
+                }
+            }
+        },
+        "/ProductCRUD/updateProduct": {
+            "post": {
+                "description": "Update Product in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Product to update",
+                        "name": "UpdateProductRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
                         }
                     }
                 }

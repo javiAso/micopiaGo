@@ -60,7 +60,7 @@ info:
   version: "1.0"
 paths:
   /ProductCRUD/createProduct:
-    post:
+    put:
       description: Create Product in the database
       parameters:
       - description: The Product to create
@@ -72,10 +72,28 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/models.Product'
+      tags:
+      - Product
+  /ProductCRUD/deleteProduct:
+    delete:
+      description: Delete Product in the database
+      parameters:
+      - description: The product identifier
+        in: query
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: deleted
+          schema:
+            type: string
       tags:
       - Product
   /ProductCRUD/getProducts:
@@ -88,6 +106,25 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Products'
+      tags:
+      - Product
+  /ProductCRUD/updateProduct:
+    post:
+      description: Update Product in the database
+      parameters:
+      - description: The Product to update
+        in: body
+        name: UpdateProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
       tags:
       - Product
   /UserCRUD/getUsers:
