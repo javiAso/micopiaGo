@@ -15,7 +15,7 @@ import (
 )
 
 func initControllers(router *mux.Router) {
-	routes.SetUserRoutes(router)
+	routes.SetCustomerRoutes(router)
 	routes.SetProductRoutes(router)
 }
 

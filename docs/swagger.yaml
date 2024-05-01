@@ -59,6 +59,36 @@ info:
   title: Micopia Swagger Documentation
   version: "1.0"
 paths:
+  /CustomerCRUD/getCustomer:
+    get:
+      description: Get Customer from the database by id
+      parameters:
+      - description: The Customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      tags:
+      - Customer
+  /CustomerCRUD/getCustomers:
+    get:
+      description: Get All Customers from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customers'
+      tags:
+      - Customer
   /ProductCRUD/createProduct:
     put:
       description: Create Product in the database
@@ -145,16 +175,4 @@ paths:
             $ref: '#/definitions/models.Product'
       tags:
       - Product
-  /UserCRUD/getUsers:
-    get:
-      description: Get All Customers from the database
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Customers'
-      tags:
-      - Customer
 swagger: "2.0"

@@ -15,6 +15,53 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/CustomerCRUD/getCustomer": {
+            "get": {
+                "description": "Get Customer from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Customer identifier",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customer"
+                        }
+                    }
+                }
+            }
+        },
+        "/CustomerCRUD/getCustomers": {
+            "get": {
+                "description": "Get All Customers from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customers"
+                        }
+                    }
+                }
+            }
+        },
         "/ProductCRUD/createProduct": {
             "put": {
                 "description": "Create Product in the database",
@@ -145,25 +192,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Product"
-                        }
-                    }
-                }
-            }
-        },
-        "/UserCRUD/getUsers": {
-            "get": {
-                "description": "Get All Customers from the database",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Customer"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Customers"
                         }
                     }
                 }
