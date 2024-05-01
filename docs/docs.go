@@ -285,6 +285,25 @@ const docTemplate = `{
                 }
             }
         },
+        "/CustomerProductCRUD/getCustomersProducts": {
+            "get": {
+                "description": "Get All Customers Products (cart/wishlist) from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerProduct"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomersProducts"
+                        }
+                    }
+                }
+            }
+        },
         "/ProductCRUD/createProduct": {
             "put": {
                 "description": "Create Product in the database",
@@ -512,6 +531,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CustomerProduct": {
+            "type": "object",
+            "properties": {
+                "customer_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_price": {
+                    "type": "number"
+                }
+            }
+        },
         "models.Customers": {
             "type": "object",
             "properties": {
@@ -519,6 +555,17 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Customer"
+                    }
+                }
+            }
+        },
+        "models.CustomersProducts": {
+            "type": "object",
+            "properties": {
+                "customer_product": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CustomerProduct"
                     }
                 }
             }

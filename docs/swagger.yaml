@@ -57,11 +57,29 @@ definitions:
       phone_number:
         type: string
     type: object
+  models.CustomerProduct:
+    properties:
+      customer_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      total_price:
+        type: number
+    type: object
   models.Customers:
     properties:
       customers:
         items:
           $ref: '#/definitions/models.Customer'
+        type: array
+    type: object
+  models.CustomersProducts:
+    properties:
+      customer_product:
+        items:
+          $ref: '#/definitions/models.CustomerProduct'
         type: array
     type: object
   models.Product:
@@ -263,6 +281,18 @@ paths:
             $ref: '#/definitions/models.Customer'
       tags:
       - Customer
+  /CustomerProductCRUD/getCustomersProducts:
+    get:
+      description: Get All Customers Products (cart/wishlist) from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomersProducts'
+      tags:
+      - CustomerProduct
   /ProductCRUD/createProduct:
     put:
       description: Create Product in the database
