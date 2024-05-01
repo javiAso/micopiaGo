@@ -15,6 +15,113 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/CategoryCRUD/createCategory": {
+            "put": {
+                "description": "Create Category in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Category to create",
+                        "name": "CreateCategoryRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
+        "/CategoryCRUD/getCategories": {
+            "get": {
+                "description": "Get All Categories from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                }
+            }
+        },
+        "/CategoryCRUD/getCategory": {
+            "get": {
+                "description": "Get Category from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Category identifier",
+                        "name": "categoryId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
+        "/CategoryCRUD/updateCategory": {
+            "post": {
+                "description": "Update Category in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Category to update",
+                        "name": "UpdateCategoryRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
         "/CustomerCRUD/createCustomer": {
             "put": {
                 "description": "Create Customer in the database",
@@ -280,83 +387,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Product"
-                        }
-                    }
-                }
-            }
-        },
-        "/categoryCRUD/createCategory": {
-            "put": {
-                "description": "Create Category in the database",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "parameters": [
-                    {
-                        "description": "The Category to create",
-                        "name": "CreateCategoryRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateCategoryRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.Category"
-                        }
-                    }
-                }
-            }
-        },
-        "/categoryCRUD/getCategories": {
-            "get": {
-                "description": "Get All Categories from the database",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Categories"
-                        }
-                    }
-                }
-            }
-        },
-        "/categoryCRUD/getCategory": {
-            "get": {
-                "description": "Get Category from the database by id",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Category"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "The Category identifier",
-                        "name": "categoryId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Category"
                         }
                     }
                 }

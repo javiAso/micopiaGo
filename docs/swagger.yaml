@@ -91,6 +91,74 @@ info:
   title: Micopia Swagger Documentation
   version: "1.0"
 paths:
+  /CategoryCRUD/createCategory:
+    put:
+      description: Create Category in the database
+      parameters:
+      - description: The Category to create
+        in: body
+        name: CreateCategoryRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Category'
+      tags:
+      - Category
+  /CategoryCRUD/getCategories:
+    get:
+      description: Get All Categories from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Categories'
+      tags:
+      - Category
+  /CategoryCRUD/getCategory:
+    get:
+      description: Get Category from the database by id
+      parameters:
+      - description: The Category identifier
+        in: query
+        name: categoryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      tags:
+      - Category
+  /CategoryCRUD/updateCategory:
+    post:
+      description: Update Category in the database
+      parameters:
+      - description: The Category to update
+        in: body
+        name: UpdateCategoryRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      tags:
+      - Category
   /CustomerCRUD/createCustomer:
     put:
       description: Create Customer in the database
@@ -263,53 +331,4 @@ paths:
             $ref: '#/definitions/models.Product'
       tags:
       - Product
-  /categoryCRUD/createCategory:
-    put:
-      description: Create Category in the database
-      parameters:
-      - description: The Category to create
-        in: body
-        name: CreateCategoryRequest
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateCategoryRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/models.Category'
-      tags:
-      - Category
-  /categoryCRUD/getCategories:
-    get:
-      description: Get All Categories from the database
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Categories'
-      tags:
-      - Category
-  /categoryCRUD/getCategory:
-    get:
-      description: Get Category from the database by id
-      parameters:
-      - description: The Category identifier
-        in: query
-        name: categoryId
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Category'
-      tags:
-      - Category
 swagger: "2.0"

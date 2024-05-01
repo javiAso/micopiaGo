@@ -16,7 +16,7 @@ import (
 // @Produce 		application/json
 // @Tags			Category
 // @Success			200 {object} models.Categories
-// @Router			/categoryCRUD/getCategories [get]
+// @Router			/CategoryCRUD/getCategories [get]
 func AllCategorysHandler(w http.ResponseWriter, r *http.Request) {
 
 	db := commons.GetConnection()
@@ -58,7 +58,7 @@ func AllCategorysHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce 		application/json
 // @Tags			Category
 // @Success			200 {object} models.Category
-// @Router			/categoryCRUD/getCategory [get]
+// @Router			/CategoryCRUD/getCategory [get]
 func GetCategoryHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Obtener el ID de la categoría del parámetro de consulta "categoryId"
@@ -106,7 +106,7 @@ func GetCategoryHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce 		application/json
 // @Tags			Category
 // @Success      	201 {object} models.Category
-// @Router			/categoryCRUD/createCategory [put]
+// @Router			/CategoryCRUD/createCategory [put]
 func CreateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	// Decodificar el cuerpo de la petición en una estructura CreateCategoryRequest
 	var createReq models.CreateCategoryRequest
@@ -145,6 +145,49 @@ func CreateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	utils.JSONResponse(w, http.StatusCreated, category)
 }
 
+// CreateTags		godoc
+// @Summary: 		Update Category
+// @Description  	Update Category in the database
+// @Param			UpdateCategoryRequest body models.Category true "The Category to update"
+// @Produce 		application/json
+// @Tags			Category
+// @Success      	200 {object} models.Category
+// @Router			/CategoryCRUD/updateCategory [post]
+func UpdateCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	// Decodificar el cuerpo de la petición en una estructura Category
+	var c models.Category
+	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed in category request")
+		return
+	}
+
+	// Obtener una conexión a la base de datos
+	db := commons.GetConnection()
+	defer db.Close()
+
+	// Iniciar transacción en la base de datos
+	tx, err := db.Begin()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to update category (Internal server error DD.BEGIN)")
+		return
+	}
+
+	code, err := updateCategory(&c, tx)
+	if err != nil {
+		utils.JSONError(w, code, err.Error())
+		return
+	}
+
+	// Realizar commit de la transacción en la base de datos
+	if err := tx.Commit(); err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to update category (COMMIT FAILED)")
+		return
+	}
+
+	// Devolver el nuevo Category como JSON
+	utils.JSONResponse(w, http.StatusOK, c)
+}
+
 // private methods
 
 func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
@@ -178,7 +221,7 @@ func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
 	// Si no se ha insertado ninguna fila, se hace rollback de la transacción
 	if rowsAffected == 0 {
 		tx.Rollback()
-		return http.StatusNotModified, errors.New("customer not created")
+		return http.StatusNotModified, errors.New("category not created")
 	}
 
 	// Get the ID of the newly created user
@@ -192,4 +235,45 @@ func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
 	c.Category_id = uint64(id)
 
 	return http.StatusCreated, nil
+}
+
+func updateCategory(c *models.Category, tx *sql.Tx) (int, error) {
+	//Check the required fields
+
+	if c.Category_id == 0 {
+		return http.StatusBadRequest, errors.New("category_id can not be empty")
+	}
+
+	if c.Name == "" {
+		return http.StatusBadRequest, errors.New("name can not be empty")
+	}
+
+	// Se prepara la sentencia SQL para updatear el Category
+	stmt, err := tx.Prepare("UPDATE Category SET name = ? WHERE category_id = ?")
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, err
+	}
+	defer stmt.Close()
+
+	// Se ejecuta la sentencia SQL para updatear el Category
+	result, err := stmt.Exec(c.Name, c.Category_id)
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, err
+	}
+
+	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return http.StatusNotModified, err
+	}
+	// Si no se ha updateado ninguna fila, se hace rollback de la transacción
+	if rowsAffected == 0 {
+		tx.Rollback()
+		return http.StatusNotModified, errors.New("category not updated (NO CHANGES)")
+	}
+
+	return http.StatusOK, nil
 }
