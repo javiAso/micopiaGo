@@ -1,4 +1,17 @@
 definitions:
+  models.CreateCustomerRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
   models.CreateProductRequest:
     properties:
       category_id:
@@ -59,6 +72,25 @@ info:
   title: Micopia Swagger Documentation
   version: "1.0"
 paths:
+  /CustomerCRUD/createCustomer:
+    put:
+      description: Create Customer in the database
+      parameters:
+      - description: The Customer to create
+        in: body
+        name: CreateCustomerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Customer'
+      tags:
+      - Customer
   /CustomerCRUD/getCustomer:
     get:
       description: Get Customer from the database by id
@@ -87,6 +119,25 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Customers'
+      tags:
+      - Customer
+  /CustomerCRUD/updateCustomer:
+    post:
+      description: Update Customer in the database
+      parameters:
+      - description: The Customer to update
+        in: body
+        name: UpdateCustomerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
       tags:
       - Customer
   /ProductCRUD/createProduct:
