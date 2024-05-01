@@ -284,9 +284,78 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/categoryCRUD/getCategories": {
+            "get": {
+                "description": "Get All Categories from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                }
+            }
+        },
+        "/categoryCRUD/getCategory": {
+            "get": {
+                "description": "Get Category from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Category identifier",
+                        "name": "categoryId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.Categories": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Category"
+                    }
+                }
+            }
+        },
+        "models.Category": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.CreateCustomerRequest": {
             "type": "object",
             "properties": {
@@ -399,7 +468,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Micopia Swagger Documentation",
-	Description:      "Wellcome to the Micopia Swagger Documentation",
+	Description:      "Wellcome to the Micopia Web Server Swagger Documentation",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -17,6 +17,7 @@ import (
 func initControllers(router *mux.Router) {
 	routes.SetCustomerRoutes(router)
 	routes.SetProductRoutes(router)
+	routes.SetCategoryRoutes(router)
 }
 
 func initSwagger(r *mux.Router) {
@@ -30,7 +31,7 @@ func initSwagger(r *mux.Router) {
 
 // @title Micopia Swagger Documentation
 // @version 1.0
-// @description Wellcome to the Micopia Swagger Documentation
+// @description Wellcome to the Micopia Web Server Swagger Documentation
 // @host localhost:8080
 
 func main() {

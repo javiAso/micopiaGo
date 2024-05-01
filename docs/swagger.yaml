@@ -1,4 +1,18 @@
 definitions:
+  models.Categories:
+    properties:
+      categories:
+        items:
+          $ref: '#/definitions/models.Category'
+        type: array
+    type: object
+  models.Category:
+    properties:
+      category_id:
+        type: integer
+      name:
+        type: string
+    type: object
   models.CreateCustomerRequest:
     properties:
       address:
@@ -68,7 +82,7 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: Wellcome to the Micopia Swagger Documentation
+  description: Wellcome to the Micopia Web Server Swagger Documentation
   title: Micopia Swagger Documentation
   version: "1.0"
 paths:
@@ -244,4 +258,34 @@ paths:
             $ref: '#/definitions/models.Product'
       tags:
       - Product
+  /categoryCRUD/getCategories:
+    get:
+      description: Get All Categories from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Categories'
+      tags:
+      - Category
+  /categoryCRUD/getCategory:
+    get:
+      description: Get Category from the database by id
+      parameters:
+      - description: The Category identifier
+        in: query
+        name: categoryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      tags:
+      - Category
 swagger: "2.0"
