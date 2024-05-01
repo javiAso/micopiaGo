@@ -73,6 +73,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/ProductCRUD/getProduct": {
+            "get": {
+                "description": "Get Product from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The product identifier",
+                        "name": "productId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                }
+            }
+        },
         "/ProductCRUD/getProducts": {
             "get": {
                 "description": "Get All Products from the database",

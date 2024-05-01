@@ -55,6 +55,54 @@ func AllProductsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CreateTags		godoc
+// @Summary: 		Get Product
+// @Description  	Get Product from the database by id
+// @Param			productId query string true "The product identifier"
+// @Produce 		application/json
+// @Tags			Product
+// @Success			200 {object} models.Product
+// @Router			/ProductCRUD/getProduct [get]
+func GetProductHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Obtener el ID del proyecto del parámetro de consulta "productId"
+	productId := r.URL.Query().Get("productId")
+	if productId == "" {
+		utils.JSONError(w, http.StatusBadRequest, "Missing productId query parameter")
+		return
+	}
+
+	// Obtener una conexión a la base de datos
+	db := commons.GetConnection()
+	defer db.Close()
+
+	// Realizar la consulta SQL para obtener las horas del proyecto
+	rows, err := db.Query("SELECT p.product_id, p.description, p.price, p.stock, p.category_id FROM product p WHERE product_id = ? ;", productId)
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to get product")
+		return
+	}
+	defer rows.Close()
+
+	//We scan the Data
+	var p models.Product
+	for rows.Next() {
+		if err := rows.Scan(&p.Product_id, &p.Description, &p.Price, &p.Stock, &p.Category_id); err != nil {
+			utils.JSONError(w, http.StatusInternalServerError, "failed to get product ( ROWS SCAN ERROR)")
+			return
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to get product (ROWS ERROR)")
+		return
+	}
+
+	// Devolver la nueva organización como JSON
+	utils.JSONResponse(w, http.StatusCreated, p)
+
+}
+
+// CreateTags		godoc
 // @Summary: 		Create Product
 // @Description  	Create Product in the database
 // @Param			CreateProductRequest body models.CreateProductRequest true "The Product to create"
@@ -62,7 +110,7 @@ func AllProductsHandler(w http.ResponseWriter, r *http.Request) {
 // @Tags			Product
 // @Success      	201 {object} models.Product
 // @Router			/ProductCRUD/createProduct [put]
-func CreateProduct(w http.ResponseWriter, r *http.Request) {
+func CreateProductHandler(w http.ResponseWriter, r *http.Request) {
 	// Decodificar el cuerpo de la petición en una estructura CreateProductRequest
 	var createReq models.CreateProductRequest
 	if err := json.NewDecoder(r.Body).Decode(&createReq); err != nil {
@@ -107,7 +155,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 // @Tags			Product
 // @Success      	200 {object} models.Product
 // @Router			/ProductCRUD/updateProduct [post]
-func UpdateProduct(w http.ResponseWriter, r *http.Request) {
+func UpdateProductHandler(w http.ResponseWriter, r *http.Request) {
 	// Decodificar el cuerpo de la petición en una estructura Product
 	var product models.Product
 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
@@ -150,7 +198,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 // @Tags			Product
 // @Success      	200 {string} string "deleted"
 // @Router 			/ProductCRUD/deleteProduct [delete]
-func DeleteProduct(w http.ResponseWriter, r *http.Request) {
+func DeleteProductHandler(w http.ResponseWriter, r *http.Request) {
 	// Get a connection to the database
 	db := commons.GetConnection()
 	defer db.Close()

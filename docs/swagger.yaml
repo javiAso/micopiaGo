@@ -96,6 +96,24 @@ paths:
             type: string
       tags:
       - Product
+  /ProductCRUD/getProduct:
+    get:
+      description: Get Product from the database by id
+      parameters:
+      - description: The product identifier
+        in: query
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      tags:
+      - Product
   /ProductCRUD/getProducts:
     get:
       description: Get All Products from the database
