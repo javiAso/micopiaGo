@@ -13,6 +13,11 @@ definitions:
       name:
         type: string
     type: object
+  models.CreateCategoryRequest:
+    properties:
+      name:
+        type: string
+    type: object
   models.CreateCustomerRequest:
     properties:
       address:
@@ -258,6 +263,25 @@ paths:
             $ref: '#/definitions/models.Product'
       tags:
       - Product
+  /categoryCRUD/createCategory:
+    put:
+      description: Create Category in the database
+      parameters:
+      - description: The Category to create
+        in: body
+        name: CreateCategoryRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Category'
+      tags:
+      - Category
   /categoryCRUD/getCategories:
     get:
       description: Get All Categories from the database

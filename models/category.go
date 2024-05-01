@@ -9,6 +9,6 @@ type Categories struct {
 	CategoryList []Category `json:"categories"`
 }
 
-type CategoryCustomerRequest struct {
+type CreateCategoryRequest struct {
 	Name string `json:"name"`
 }

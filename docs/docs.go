@@ -285,6 +285,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/categoryCRUD/createCategory": {
+            "put": {
+                "description": "Create Category in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Category to create",
+                        "name": "CreateCategoryRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
         "/categoryCRUD/getCategories": {
             "get": {
                 "description": "Get All Categories from the database",
@@ -351,6 +381,14 @@ const docTemplate = `{
                 "category_id": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateCategoryRequest": {
+            "type": "object",
+            "properties": {
                 "name": {
                     "type": "string"
                 }

@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"database/sql"
+	"encoding/json"
+	"errors"
 	"micopia/commons"
 	"micopia/models"
 	"micopia/utils"
@@ -94,4 +97,99 @@ func GetCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	// Devolver la category como JSON
 	utils.JSONResponse(w, http.StatusOK, c)
 
+}
+
+// CreateTags		godoc
+// @Summary: 		Create Category
+// @Description  	Create Category in the database
+// @Param			CreateCategoryRequest body models.CreateCategoryRequest true "The Category to create"
+// @Produce 		application/json
+// @Tags			Category
+// @Success      	201 {object} models.Category
+// @Router			/categoryCRUD/createCategory [put]
+func CreateCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	// Decodificar el cuerpo de la petición en una estructura CreateCategoryRequest
+	var createReq models.CreateCategoryRequest
+	if err := json.NewDecoder(r.Body).Decode(&createReq); err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed in category Request")
+		return
+	}
+
+	// Obtener una conexión a la base de datos
+	db := commons.GetConnection()
+	defer db.Close()
+
+	// Iniciar transacción en la base de datos
+	tx, err := db.Begin()
+	if err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to create category (Internal server error DB.BEGIN)")
+		return
+	}
+
+	category := new(models.Category)
+	category.Name = createReq.Name
+
+	code, err := createCategory(category, tx)
+	if err != nil {
+		utils.JSONError(w, code, err.Error())
+		return
+	}
+
+	// Realizar commit de la transacción en la base de datos
+	if err := tx.Commit(); err != nil {
+		utils.JSONError(w, http.StatusInternalServerError, "failed to create category (COMMIT FAILED)")
+		return
+	}
+
+	// Devolver el nuevo Category como JSON
+	utils.JSONResponse(w, http.StatusCreated, category)
+}
+
+// private methods
+
+func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
+	//Check the required fields
+
+	if c.Name == "" {
+		return http.StatusBadRequest, errors.New("name can not be empty")
+	}
+
+	// We prepare the query to create a user
+	stmt, err := tx.Prepare("INSERT INTO Category(name) VALUES(?)")
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, err
+	}
+	defer stmt.Close()
+
+	// Se ejecuta la sentencia SQL para insertar el user
+	result, err := stmt.Exec(c.Name)
+	if err != nil {
+		tx.Rollback()
+		return http.StatusInternalServerError, err
+	}
+
+	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return http.StatusNotModified, err
+	}
+	// Si no se ha insertado ninguna fila, se hace rollback de la transacción
+	if rowsAffected == 0 {
+		tx.Rollback()
+		return http.StatusNotModified, errors.New("customer not created")
+	}
+
+	// Get the ID of the newly created user
+	id, err := result.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return http.StatusNotModified, err
+	}
+
+	// Set the ID of the user struct to the new ID
+	c.Category_id = uint64(id)
+
+	return http.StatusCreated, nil
 }
