@@ -61,6 +61,8 @@ definitions:
     properties:
       customer_id:
         type: integer
+      customer_product_id:
+        type: integer
       product_id:
         type: integer
       quantity:
@@ -281,6 +283,24 @@ paths:
             $ref: '#/definitions/models.Customer'
       tags:
       - Customer
+  /CustomerProductCRUD/getCustomerProduct:
+    get:
+      description: Get CustomerProduct (cart/wishlist) from the database by id
+      parameters:
+      - description: The Customer Product (cart/wishlist) identifier
+        in: query
+        name: customerProductId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomerProduct'
+      tags:
+      - CustomerProduct
   /CustomerProductCRUD/getCustomersProducts:
     get:
       description: Get All Customers Products (cart/wishlist) from the database

@@ -285,6 +285,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/CustomerProductCRUD/getCustomerProduct": {
+            "get": {
+                "description": "Get CustomerProduct (cart/wishlist) from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerProduct"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Customer Product (cart/wishlist) identifier",
+                        "name": "customerProductId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerProduct"
+                        }
+                    }
+                }
+            }
+        },
         "/CustomerProductCRUD/getCustomersProducts": {
             "get": {
                 "description": "Get All Customers Products (cart/wishlist) from the database",
@@ -535,6 +563,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "customer_id": {
+                    "type": "integer"
+                },
+                "customer_product_id": {
                     "type": "integer"
                 },
                 "product_id": {
