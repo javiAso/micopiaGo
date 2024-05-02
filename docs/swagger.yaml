@@ -61,8 +61,6 @@ definitions:
     properties:
       customer_id:
         type: integer
-      customer_product_id:
-        type: integer
       product_id:
         type: integer
       quantity:
@@ -285,11 +283,12 @@ paths:
       - Customer
   /CustomerProductCRUD/getCustomerProduct:
     get:
-      description: Get CustomerProduct (cart/wishlist) from the database by id
+      description: Get CustomerProduct (cart/wishlist) from the database by customer
+        id
       parameters:
-      - description: The Customer Product (cart/wishlist) identifier
+      - description: The Customer identifier
         in: query
-        name: customerProductId
+        name: customerId
         required: true
         type: string
       produces:

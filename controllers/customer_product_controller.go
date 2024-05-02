@@ -19,7 +19,7 @@ func AllCustomersProductsHandler(w http.ResponseWriter, r *http.Request) {
 	db := commons.GetConnection()
 
 	var customersProducts []models.CustomerProduct
-	rows, err := db.Query("SELECT c.customer_product_id, c.customer_id, c.product_id, c.quantity, c.total_price FROM customer_product c;")
+	rows, err := db.Query("SELECT c.customer_id, c.product_id, c.quantity, c.total_price FROM customer_product c;")
 	if err != nil {
 		utils.JSONError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -28,7 +28,7 @@ func AllCustomersProductsHandler(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var cP models.CustomerProduct
-		if err := rows.Scan(&cP.Customer_product_id, &cP.Customer_id, &cP.Product_id, &cP.Quantity, &cP.TotalPrice); err != nil {
+		if err := rows.Scan(&cP.Customer_id, &cP.Product_id, &cP.Quantity, &cP.TotalPrice); err != nil {
 			utils.JSONError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
@@ -50,29 +50,29 @@ func AllCustomersProductsHandler(w http.ResponseWriter, r *http.Request) {
 
 // CreateTags		godoc
 // @Summary: 		Get CustomerProduct
-// @Description  	Get CustomerProduct (cart/wishlist) from the database by id
-// @Param			customerProductId query string true "The Customer Product (cart/wishlist) identifier"
+// @Description  	Get CustomerProduct (cart/wishlist) from the database by customer id
+// @Param			customerId query string true "The Customer identifier"
 // @Produce 		application/json
 // @Tags			CustomerProduct
 // @Success			200 {object} models.CustomerProduct
 // @Router			/CustomerProductCRUD/getCustomerProduct [get]
 func GetCustomerProductHandler(w http.ResponseWriter, r *http.Request) {
 
-	// Obtener el ID del proyecto del parámetro de consulta "customerId"
-	id := r.URL.Query().Get("customerProductId")
+	// Get the  "customerId"
+	id := r.URL.Query().Get("customerId")
 	if id == "" {
-		utils.JSONError(w, http.StatusBadRequest, "missing customerProductId query parameter")
+		utils.JSONError(w, http.StatusBadRequest, "missing customerId query parameter")
 		return
 	}
 
-	// Obtener una conexión a la base de datos
+	// Get connection with the DB
 	db := commons.GetConnection()
 	defer db.Close()
 
 	// Query to get customer product by id
-	rows, err := db.Query("SELECT c.customer_product_id, c.customer_id, c.product_id, c.quantity, c.total_price FROM customer_product c WHERE c.customer_product_id = ?;", id)
+	rows, err := db.Query("SELECT c.customer_id, c.product_id, c.quantity, c.total_price FROM customer_product c WHERE c.customer_id = ?;", id)
 	if err != nil {
-		utils.JSONError(w, http.StatusInternalServerError, "failed to get customer (DB QUERY ERROR)")
+		utils.JSONError(w, http.StatusInternalServerError, "failed to get cart (DB QUERY ERROR)")
 		return
 	}
 	defer rows.Close()
@@ -80,18 +80,18 @@ func GetCustomerProductHandler(w http.ResponseWriter, r *http.Request) {
 	//We scan the Data
 	var c models.CustomerProduct
 	for rows.Next() {
-		if err := rows.Scan(&c.Customer_product_id, &c.Customer_id, &c.Product_id, &c.Quantity, &c.TotalPrice); err != nil {
-			utils.JSONError(w, http.StatusInternalServerError, "failed to get customer ( ROWS SCAN ERROR)")
+		if err := rows.Scan(&c.Customer_id, &c.Product_id, &c.Quantity, &c.TotalPrice); err != nil {
+			utils.JSONError(w, http.StatusInternalServerError, "failed to get cart ( ROWS SCAN ERROR)")
 			return
 		}
 	}
 
 	if err := rows.Err(); err != nil {
-		utils.JSONError(w, http.StatusInternalServerError, "failed to get customer (ROWS ERROR)")
+		utils.JSONError(w, http.StatusInternalServerError, "failed to get cart (ROWS ERROR)")
 		return
 	}
 
-	// Devolver la nueva organización como JSON
-	utils.JSONResponse(w, http.StatusCreated, c)
+	// response as JSON
+	utils.JSONResponse(w, http.StatusOK, c)
 
 }

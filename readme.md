@@ -1,3 +1,10 @@
+TODO List:
+
+1. _Transform 200 ok response with an empty object for a better solution (02/05/2024)
+
+
+
+
 Tips about go coding:
 
 You shouldn't experience any performance degradation by importing the `mux` library in your controller if you're already using it in `main.go`. In Go, when you import a library, it's loaded into memory only once, no matter how many times you import it across different files in the same package. What matters is how efficiently you use it in your code.

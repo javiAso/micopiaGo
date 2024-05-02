@@ -287,7 +287,7 @@ const docTemplate = `{
         },
         "/CustomerProductCRUD/getCustomerProduct": {
             "get": {
-                "description": "Get CustomerProduct (cart/wishlist) from the database by id",
+                "description": "Get CustomerProduct (cart/wishlist) from the database by customer id",
                 "produces": [
                     "application/json"
                 ],
@@ -297,8 +297,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "The Customer Product (cart/wishlist) identifier",
-                        "name": "customerProductId",
+                        "description": "The Customer identifier",
+                        "name": "customerId",
                         "in": "query",
                         "required": true
                     }
@@ -563,9 +563,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "customer_id": {
-                    "type": "integer"
-                },
-                "customer_product_id": {
                     "type": "integer"
                 },
                 "product_id": {
