@@ -300,6 +300,29 @@ paths:
             $ref: '#/definitions/models.CustomerProduct'
       tags:
       - CustomerProduct
+  /CustomerProductCRUD/deleteCustomerProduct:
+    delete:
+      description: Delete CustomerProduct in the database
+      parameters:
+      - description: The Customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      - description: The Product identifier
+        in: query
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer product deleted successfully
+          schema:
+            type: string
+      tags:
+      - CustomerProduct
   /CustomerProductCRUD/getCustomerProduct:
     get:
       description: Get CustomerProducts (cart/wishlist) from the database by customer
@@ -331,6 +354,25 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.CustomersProducts'
+      tags:
+      - CustomerProduct
+  /CustomerProductCRUD/updateCustomerProduct:
+    post:
+      description: Update Customer (cart/wishlist) in the database
+      parameters:
+      - description: The Customer to update
+        in: body
+        name: Customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CustomerProduct'
       tags:
       - CustomerProduct
   /ProductCRUD/createProduct:

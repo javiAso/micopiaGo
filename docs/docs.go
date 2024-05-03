@@ -315,6 +315,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/CustomerProductCRUD/deleteCustomerProduct": {
+            "delete": {
+                "description": "Delete CustomerProduct in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerProduct"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Customer identifier",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Product identifier",
+                        "name": "productId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer product deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/CustomerProductCRUD/getCustomerProduct": {
             "get": {
                 "description": "Get CustomerProducts (cart/wishlist) from the database by customer id",
@@ -360,6 +395,36 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.CustomersProducts"
+                        }
+                    }
+                }
+            }
+        },
+        "/CustomerProductCRUD/updateCustomerProduct": {
+            "post": {
+                "description": "Update Customer (cart/wishlist) in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerProduct"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Customer to update",
+                        "name": "Customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerProduct"
                         }
                     }
                 }
