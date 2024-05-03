@@ -281,9 +281,28 @@ paths:
             $ref: '#/definitions/models.Customer'
       tags:
       - Customer
+  /CustomerProductCRUD/createCustomerProduct:
+    put:
+      description: Create CustomerProduct in the database
+      parameters:
+      - description: The CustomerProduct to create
+        in: body
+        name: CreateCustomerProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerProduct'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CustomerProduct'
+      tags:
+      - CustomerProduct
   /CustomerProductCRUD/getCustomerProduct:
     get:
-      description: Get CustomerProduct (cart/wishlist) from the database by customer
+      description: Get CustomerProducts (cart/wishlist) from the database by customer
         id
       parameters:
       - description: The Customer identifier
@@ -297,7 +316,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.CustomerProduct'
+            items:
+              $ref: '#/definitions/models.CustomerProduct'
+            type: array
       tags:
       - CustomerProduct
   /CustomerProductCRUD/getCustomersProducts:

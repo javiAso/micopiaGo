@@ -1,6 +1,7 @@
 TODO List:
 
 1. _Transform 200 ok response with an empty object for a better solution (02/05/2024)
+2. _Are the HTTP code responses well implemented? -> [text](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
 
 
 

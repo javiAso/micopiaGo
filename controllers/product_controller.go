@@ -253,7 +253,7 @@ func createProduct(p *models.Product, tx *sql.Tx) (int, error) {
 	// Se ejecuta la sentencia SQL para insertar el user
 	result, err := stmt.Exec(p.Description, p.Price, p.Stock, p.Category_id)
 	if err != nil {
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -302,7 +302,7 @@ func updateProduct(p *models.Product, tx *sql.Tx) (int, error) {
 	// Se ejecuta la sentencia SQL para updatear el producto
 	result, err := stmt.Exec(p.Description, p.Price, p.Stock, p.Category_id, p.Product_id)
 	if err != nil {
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -332,7 +332,7 @@ func deleteProduct(id int, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(id)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, errors.New("failed to delete product (EXECUTE QUERY)")
+		return http.StatusNotAcceptable, errors.New("failed to delete product (EXECUTE QUERY)")
 	}
 
 	// Get the number of rows affected by the SQL statement

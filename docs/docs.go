@@ -285,9 +285,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/CustomerProductCRUD/createCustomerProduct": {
+            "put": {
+                "description": "Create CustomerProduct in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerProduct"
+                ],
+                "parameters": [
+                    {
+                        "description": "The CustomerProduct to create",
+                        "name": "CreateCustomerProductRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.CustomerProduct"
+                        }
+                    }
+                }
+            }
+        },
         "/CustomerProductCRUD/getCustomerProduct": {
             "get": {
-                "description": "Get CustomerProduct (cart/wishlist) from the database by customer id",
+                "description": "Get CustomerProducts (cart/wishlist) from the database by customer id",
                 "produces": [
                     "application/json"
                 ],
@@ -307,7 +337,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.CustomerProduct"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.CustomerProduct"
+                            }
                         }
                     }
                 }

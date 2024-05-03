@@ -251,7 +251,7 @@ func createCategory(c *models.Category, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(c.Name)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -302,7 +302,7 @@ func updateCategory(c *models.Category, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(c.Name, c.Category_id)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -334,7 +334,7 @@ func deleteCategory(id int, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(id)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, errors.New("failed to delete category (EXECUTE QUERY)")
+		return http.StatusNotAcceptable, errors.New("failed to delete category (EXECUTE QUERY)")
 	}
 
 	// Get the number of rows affected by the SQL statement

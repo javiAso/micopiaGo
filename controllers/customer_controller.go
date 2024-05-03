@@ -277,7 +277,7 @@ func createCustomer(c *models.Customer, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(c.Address, c.Email, c.First_name, c.Last_name, c.Phone_Number)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -353,7 +353,7 @@ func updateCustomer(c *models.Customer, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(c.Email, c.First_name, c.Last_name, c.Phone_Number, c.Address, c.Customer_id)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, err
+		return http.StatusNotAcceptable, err
 	}
 
 	// Se obtiene la cantidad de filas afectadas por la sentencia SQL
@@ -385,7 +385,7 @@ func deleteCustomer(id int, tx *sql.Tx) (int, error) {
 	result, err := stmt.Exec(id)
 	if err != nil {
 		tx.Rollback()
-		return http.StatusInternalServerError, errors.New("failed to delete customer (EXECUTE QUERY)")
+		return http.StatusNotAcceptable, errors.New("failed to delete customer (EXECUTE QUERY)")
 	}
 
 	// Get the number of rows affected by the SQL statement
