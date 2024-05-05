@@ -20,6 +20,7 @@ func initControllers(router *mux.Router) {
 	routes.SetCategoryRoutes(router)
 	routes.SetCustomerProductRoutes(router)
 	routes.SetPaymentRoutes(router)
+	routes.SetShipmentRoutes(router)
 }
 
 func initSwagger(r *mux.Router) {

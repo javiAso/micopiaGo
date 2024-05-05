@@ -115,6 +115,25 @@ definitions:
           $ref: '#/definitions/models.Product'
         type: array
     type: object
+  models.Shipment:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      customer_id:
+        type: integer
+      shipment_date:
+        type: string
+      shipment_id:
+        type: integer
+      state:
+        type: string
+      zip_code:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -582,4 +601,112 @@ paths:
             $ref: '#/definitions/models.Product'
       tags:
       - Product
+  /ShipmentCRUD/createShipment:
+    put:
+      description: Create Shipment in the database
+      parameters:
+      - description: The Shipment to create, shipment_id is not relevant
+        in: body
+        name: CreateShipmentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Shipment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Shipment'
+      tags:
+      - Shipment
+  /ShipmentCRUD/deleteShipment:
+    delete:
+      description: Delete Shipment in the database
+      parameters:
+      - description: The Shipment identifier
+        in: query
+        name: shipmentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Shipment deleted successfully
+          schema:
+            type: string
+      tags:
+      - Shipment
+  /ShipmentCRUD/getCustomerShipments:
+    get:
+      description: Get All Customer Shipments from the database
+      parameters:
+      - description: The customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Shipment'
+            type: array
+      tags:
+      - Shipment
+  /ShipmentCRUD/getShipment:
+    get:
+      description: Get Shipment from the database by id
+      parameters:
+      - description: The shipment identifier
+        in: query
+        name: shipmentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Shipment'
+      tags:
+      - Shipment
+  /ShipmentCRUD/getShipments:
+    get:
+      description: Get All Shipments from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Shipment'
+            type: array
+      tags:
+      - Shipment
+  /ShipmentCRUD/updateShipment:
+    post:
+      description: Update Shipment in the database
+      parameters:
+      - description: The Shipment to update
+        in: body
+        name: UpdateShipmentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Shipment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Shipment'
+      tags:
+      - Shipment
 swagger: "2.0"

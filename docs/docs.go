@@ -733,6 +733,175 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/ShipmentCRUD/createShipment": {
+            "put": {
+                "description": "Create Shipment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Shipment to create, shipment_id is not relevant",
+                        "name": "CreateShipmentRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Shipment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Shipment"
+                        }
+                    }
+                }
+            }
+        },
+        "/ShipmentCRUD/deleteShipment": {
+            "delete": {
+                "description": "Delete Shipment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Shipment identifier",
+                        "name": "shipmentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Shipment deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ShipmentCRUD/getCustomerShipments": {
+            "get": {
+                "description": "Get All Customer Shipments from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The customer identifier",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Shipment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ShipmentCRUD/getShipment": {
+            "get": {
+                "description": "Get Shipment from the database by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The shipment identifier",
+                        "name": "shipmentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Shipment"
+                        }
+                    }
+                }
+            }
+        },
+        "/ShipmentCRUD/getShipments": {
+            "get": {
+                "description": "Get All Shipments from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Shipment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ShipmentCRUD/updateShipment": {
+            "post": {
+                "description": "Update Shipment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shipment"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Shipment to update",
+                        "name": "UpdateShipmentRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Shipment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Shipment"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -913,6 +1082,35 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Product"
                     }
+                }
+            }
+        },
+        "models.Shipment": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "shipment_date": {
+                    "type": "string"
+                },
+                "shipment_id": {
+                    "type": "integer"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
                 }
             }
         }
