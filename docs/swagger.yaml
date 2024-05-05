@@ -82,6 +82,19 @@ definitions:
           $ref: '#/definitions/models.CustomerProduct'
         type: array
     type: object
+  models.Payment:
+    properties:
+      amount:
+        type: number
+      customer_id:
+        type: integer
+      payment_date:
+        type: string
+      payment_id:
+        type: integer
+      payment_method:
+        type: string
+    type: object
   models.Product:
     properties:
       category_id:
@@ -375,6 +388,114 @@ paths:
             $ref: '#/definitions/models.CustomerProduct'
       tags:
       - CustomerProduct
+  /PaymentCRUD/createPayment:
+    put:
+      description: Create Payment in the database
+      parameters:
+      - description: The Payment to create, payment_id is not relevant
+        in: body
+        name: CreatePaymentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Payment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Payment'
+      tags:
+      - Payment
+  /PaymentCRUD/deletePayment:
+    delete:
+      description: Delete Payment in the database
+      parameters:
+      - description: The Payment identifier
+        in: query
+        name: paymentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Payment deleted successfully
+          schema:
+            type: string
+      tags:
+      - Payment
+  /PaymentCRUD/getCustomerPayments:
+    get:
+      description: Get All Payments by Customer Id from the database
+      parameters:
+      - description: The Customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Payment'
+            type: array
+      tags:
+      - Payment
+  /PaymentCRUD/getPayment:
+    get:
+      description: Get Payment by Payment Id from the database
+      parameters:
+      - description: The Payment identifier
+        in: query
+        name: paymentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Payment'
+      tags:
+      - Payment
+  /PaymentCRUD/getPayments:
+    get:
+      description: Get All Payments from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Payment'
+            type: array
+      tags:
+      - Payment
+  /PaymentCRUD/updatePayment:
+    post:
+      description: Update Payment in the database
+      parameters:
+      - description: The Payment to update
+        in: body
+        name: UpdatePaymentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Payment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Payment'
+      tags:
+      - Payment
   /ProductCRUD/createProduct:
     put:
       description: Create Product in the database

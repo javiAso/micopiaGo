@@ -430,6 +430,175 @@ const docTemplate = `{
                 }
             }
         },
+        "/PaymentCRUD/createPayment": {
+            "put": {
+                "description": "Create Payment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Payment to create, payment_id is not relevant",
+                        "name": "CreatePaymentRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Payment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Payment"
+                        }
+                    }
+                }
+            }
+        },
+        "/PaymentCRUD/deletePayment": {
+            "delete": {
+                "description": "Delete Payment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Payment identifier",
+                        "name": "paymentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/PaymentCRUD/getCustomerPayments": {
+            "get": {
+                "description": "Get All Payments by Customer Id from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Customer identifier",
+                        "name": "customerId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Payment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/PaymentCRUD/getPayment": {
+            "get": {
+                "description": "Get Payment by Payment Id from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Payment identifier",
+                        "name": "paymentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Payment"
+                        }
+                    }
+                }
+            }
+        },
+        "/PaymentCRUD/getPayments": {
+            "get": {
+                "description": "Get All Payments from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Payment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/PaymentCRUD/updatePayment": {
+            "post": {
+                "description": "Update Payment in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Payment to update",
+                        "name": "UpdatePaymentRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Payment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Payment"
+                        }
+                    }
+                }
+            }
+        },
         "/ProductCRUD/createProduct": {
             "put": {
                 "description": "Create Product in the database",
@@ -693,6 +862,26 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.CustomerProduct"
                     }
+                }
+            }
+        },
+        "models.Payment": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "payment_date": {
+                    "type": "string"
+                },
+                "payment_id": {
+                    "type": "integer"
+                },
+                "payment_method": {
+                    "type": "string"
                 }
             }
         },
