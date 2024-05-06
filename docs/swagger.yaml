@@ -82,6 +82,21 @@ definitions:
           $ref: '#/definitions/models.CustomerProduct'
         type: array
     type: object
+  models.Order:
+    properties:
+      customer_id:
+        type: integer
+      order_date:
+        type: string
+      order_id:
+        type: integer
+      payment_id:
+        type: integer
+      shipment_id:
+        type: integer
+      total_price:
+        type: number
+    type: object
   models.Payment:
     properties:
       amount:
@@ -407,6 +422,154 @@ paths:
             $ref: '#/definitions/models.CustomerProduct'
       tags:
       - CustomerProduct
+  /OrderCRUD/createOrder:
+    put:
+      description: Create Order in the database
+      parameters:
+      - description: The Order to create, order_id is not relevant
+        in: body
+        name: CreateOrderRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Order'
+      tags:
+      - Order
+  /OrderCRUD/deleteOrder:
+    delete:
+      description: Delete Order in the database
+      parameters:
+      - description: The Order identifier
+        in: query
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order deleted successfully
+          schema:
+            type: string
+      tags:
+      - Order
+  /OrderCRUD/getCustomerOrders:
+    get:
+      description: Get All Orders from the database
+      parameters:
+      - description: The customer identifier
+        in: query
+        name: customerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      tags:
+      - Order
+  /OrderCRUD/getOrder:
+    get:
+      description: Get Order by Id from the database
+      parameters:
+      - description: The order identifier
+        in: query
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      tags:
+      - Order
+  /OrderCRUD/getOrders:
+    get:
+      description: Get All Orders from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      tags:
+      - Order
+  /OrderCRUD/getPaymentOrders:
+    get:
+      description: Get All Orders from the database
+      parameters:
+      - description: The payment identifier
+        in: query
+        name: paymentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      tags:
+      - Order
+  /OrderCRUD/getShipmentOrders:
+    get:
+      description: Get All Orders from the database
+      parameters:
+      - description: The shipment identifier
+        in: query
+        name: shipmentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      tags:
+      - Order
+  /OrderCRUD/updateOrder:
+    post:
+      description: Update Order in the database
+      parameters:
+      - description: The Order to update
+        in: body
+        name: UpdateOrderRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      tags:
+      - Order
   /PaymentCRUD/createPayment:
     put:
       description: Create Payment in the database
