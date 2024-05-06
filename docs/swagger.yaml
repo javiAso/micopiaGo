@@ -97,6 +97,17 @@ definitions:
       total_price:
         type: number
     type: object
+  models.OrderProduct:
+    properties:
+      order_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      total_price:
+        type: number
+    type: object
   models.Payment:
     properties:
       amount:
@@ -570,6 +581,121 @@ paths:
             $ref: '#/definitions/models.Order'
       tags:
       - Order
+  /OrderProductCRUD/createOrderProduct:
+    put:
+      description: Create OrderProduct in the database
+      parameters:
+      - description: The Order Product to create
+        in: body
+        name: CreateOrderProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderProduct'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.OrderProduct'
+      tags:
+      - OrderProduct
+  /OrderProductCRUD/deleteOrderProduct:
+    delete:
+      description: Delete OrderProduct in the database
+      parameters:
+      - description: The OrderProduct identifier
+        in: query
+        name: orderId
+        required: true
+        type: string
+      - description: The OrderProduct identifier
+        in: query
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OrderProduct deleted successfully
+          schema:
+            type: string
+      tags:
+      - OrderProduct
+  /OrderProductCRUD/getOrderProducts:
+    get:
+      description: Get All Order Products from the database
+      parameters:
+      - description: The order identifier
+        in: query
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderProduct'
+            type: array
+      tags:
+      - OrderProduct
+  /OrderProductCRUD/getOrdersProducts:
+    get:
+      description: Get All Orders Products from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderProduct'
+            type: array
+      tags:
+      - OrderProduct
+  /OrderProductCRUD/getProductOrders:
+    get:
+      description: Get All Order Products from the database
+      parameters:
+      - description: The product identifier
+        in: query
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderProduct'
+            type: array
+      tags:
+      - OrderProduct
+  /OrderProductCRUD/updateOrderProduct:
+    post:
+      description: Update OrderProduct in the database
+      parameters:
+      - description: The Order Product to update
+        in: body
+        name: UpdateOrderProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OrderProduct'
+      tags:
+      - OrderProduct
   /PaymentCRUD/createPayment:
     put:
       description: Create Payment in the database

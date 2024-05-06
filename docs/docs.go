@@ -661,6 +661,185 @@ const docTemplate = `{
                 }
             }
         },
+        "/OrderProductCRUD/createOrderProduct": {
+            "put": {
+                "description": "Create OrderProduct in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Order Product to create",
+                        "name": "CreateOrderProductRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderProduct"
+                        }
+                    }
+                }
+            }
+        },
+        "/OrderProductCRUD/deleteOrderProduct": {
+            "delete": {
+                "description": "Delete OrderProduct in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The OrderProduct identifier",
+                        "name": "orderId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The OrderProduct identifier",
+                        "name": "productId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OrderProduct deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/OrderProductCRUD/getOrderProducts": {
+            "get": {
+                "description": "Get All Order Products from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The order identifier",
+                        "name": "orderId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OrderProduct"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/OrderProductCRUD/getOrdersProducts": {
+            "get": {
+                "description": "Get All Orders Products from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OrderProduct"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/OrderProductCRUD/getProductOrders": {
+            "get": {
+                "description": "Get All Order Products from the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The product identifier",
+                        "name": "productId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OrderProduct"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/OrderProductCRUD/updateOrderProduct": {
+            "post": {
+                "description": "Update OrderProduct in the database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OrderProduct"
+                ],
+                "parameters": [
+                    {
+                        "description": "The Order Product to update",
+                        "name": "UpdateOrderProductRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderProduct"
+                        }
+                    }
+                }
+            }
+        },
         "/PaymentCRUD/createPayment": {
             "put": {
                 "description": "Create Payment in the database",
@@ -1281,6 +1460,23 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "shipment_id": {
+                    "type": "integer"
+                },
+                "total_price": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.OrderProduct": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
                     "type": "integer"
                 },
                 "total_price": {
