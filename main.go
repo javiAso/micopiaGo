@@ -27,7 +27,7 @@ func initControllers(router *mux.Router) {
 
 func initSwagger(r *mux.Router) {
 	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://15.188.15.97:443/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("https://15.188.15.97:443/swagger/doc.json"), //The url pointing to API definition
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("swagger-ui"),
