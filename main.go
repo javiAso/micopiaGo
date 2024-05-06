@@ -27,7 +27,7 @@ func initControllers(router *mux.Router) {
 
 func initSwagger(r *mux.Router) {
 	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("http://15.188.15.97:443/swagger/doc.json"), //The url pointing to API definition
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("swagger-ui"),
@@ -37,7 +37,7 @@ func initSwagger(r *mux.Router) {
 // @title Micopia Swagger Documentation
 // @version 1.0
 // @description Wellcome to the Micopia Web Server Swagger Documentation
-// @host localhost:8080
+// @host 15.188.15.97:443
 
 func main() {
 	err := godotenv.Load()
@@ -51,7 +51,7 @@ func main() {
 	initSwagger(router)
 	initControllers(router)
 	handler := c.Handler(router)
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	log.Fatal(http.ListenAndServe(":443", handler))
 	server := http.Server{
 		Addr:    ":" + os.Getenv("PORT"),
 		Handler: router,
