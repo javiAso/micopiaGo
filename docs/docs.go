@@ -1570,7 +1570,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "15.188.15.97:443",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Micopia Swagger Documentation",

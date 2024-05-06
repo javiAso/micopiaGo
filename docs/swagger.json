@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "15.188.15.97:443",
     "paths": {
         "/CategoryCRUD/createCategory": {
             "put": {

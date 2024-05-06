@@ -160,7 +160,7 @@ definitions:
       zip_code:
         type: string
     type: object
-host: localhost:8080
+host: 15.188.15.97:443
 info:
   contact: {}
   description: Wellcome to the Micopia Web Server Swagger Documentation
